@@ -1,4 +1,4 @@
-# TSWoW
+# TSWoW - Azara Edition
 
 TSWoW (TypeScript WoW) is a **free** modding framework, mod loader and integrated development environment for the World of Warcraft: Wrath of the Lich King (WotLK) expansion build around the [TrinityCore](https://github.com/trinitycore/trinitycore) emulator.
 

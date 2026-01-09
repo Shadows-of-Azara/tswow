@@ -43,6 +43,7 @@ import { RegistryStatic } from "../Refs/Registry";
 import { TotemCategoryRegistry } from "../TotemCategory/TotemCategory";
 import { BagFamily } from "./BagFamily";
 import { ItemAmmoType } from "./ItemAmmoTypes";
+import { ItemAttributes } from "./ItemAttributes";
 import { ItemBonding } from "./ItemBonding";
 import { ItemClass } from "./ItemClass";
 import { ItemDamages } from "./ItemDamage";
@@ -113,6 +114,8 @@ export class ItemDBCRow extends CellSystem<ItemTemplate> {
 export class ItemTemplate extends MainEntityID<item_templateRow> {
     @Transient
     protected get dbc() { return ItemDBCRow.dbc(this); }
+    @Transient
+    protected _itemBudget: number | undefined = undefined;
     readonly DBCRow = new ItemDBCRow(this);
     protected ItemSetNameRow = new ItemSetNameRow(this);
     static ItemSetNameRow(template: ItemTemplate) {
@@ -188,6 +191,7 @@ export class ItemTemplate extends MainEntityID<item_templateRow> {
         ])
     }
     get Price() { return new ItemPrice(this); }
+    get Attributes() { return new ItemAttributes(this); }
     get Material() {
         return makeEnumCell(ItemMaterial,this
             , new MulticastCell(this, [this.row.Material,this.dbc.Material])
@@ -259,6 +263,14 @@ export class ItemTemplate extends MainEntityID<item_templateRow> {
 
     get ID() {
         return this.row.entry.get();
+    }
+
+    get ItemBudget(): number | undefined {
+        return this._itemBudget;
+    }
+
+    set ItemBudget(value: number | undefined) {
+        this._itemBudget = value;
     }
 
     codify(settings: {mod?: string, id?: string, name?: string, create_spells?: boolean, all_locs?: bool} & CodegenSettings)
